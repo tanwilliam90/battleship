@@ -16,13 +16,13 @@ $(document).ready(function(){
       //sets the value of the coordinates == to the td's id
       coordinates = $(this).attr("id");
       //if the coordinates match match the location of a ship
-      if (board[coordinates[0]][coordinates[1]] == 5) {
+      if (board[coordinates[0]][coordinates[1]] == SHIP) {
         // calls the id using the values of the coordinates. and adds a class and increments shipsSunk.
         $("#"+coordinates[0]+coordinates[1]).addClass("hit");
         shipsSunk++;
       }
       if (shipsSunk == shipsTotal) {
-        $("#result").text("Congrats, You Sunk My Battleships.");
+        $("#result").text("Congrats, You Sunk My Battleship(s).");
         $("td").off("click");
       }
       if (torpedosUsed <= 0) {
@@ -117,7 +117,7 @@ function createBoard(array) {
   }
   for (var j = 0; j < 10; j++) {
     for (var k = 0; k < 10; k++) {
-    array[k].push(0);
+      array[k].push(0);
     }
   }
 }
