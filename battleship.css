@@ -1,0 +1,24 @@
+td {
+  border-style: solid;
+  border-color: black;
+  border-collapse: collapse;
+  height: 50px;
+  width: 50px;
+  background-color: lightblue;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.miss {
+  background-color: white;
+}
+
+.hiddenships {
+  background: green;
+}
+
+.hit {
+  background-color: red;
+}
