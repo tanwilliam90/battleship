@@ -1,7 +1,6 @@
 var torpedosUsed = 25;
 var board = [];
 var SHIP = 5;
-var coordinates = [];
 var shipsSunk = 0;
 var shipsTotal;
 
@@ -14,14 +13,14 @@ $(document).ready(function(){
       fireTorpedo();
       $("#torpedos").text("Torpedos Left: " +torpedosUsed);
       //sets the value of the coordinates == to the td's id
-      coordinates = $(this).attr("id");
+      var coordinates = $(this).attr("id").split("");
       //if the coordinates match match the location of a ship
-      if (board[coordinates[0]][coordinates[1]] == SHIP) {
+      if (board[coordinates[0]][coordinates[1]] === SHIP) {
         // calls the id using the values of the coordinates. and adds a class and increments shipsSunk.
-        $("#"+coordinates[0]+coordinates[1]).addClass("hit");
+        $(this).addClass("hit");
         shipsSunk++;
       }
-      if (shipsSunk == shipsTotal) {
+      if (shipsSunk === shipsTotal) {
         $("#result").text("Congrats, You Sunk My Battleship(s).");
         $("td").off("click");
       }
@@ -93,9 +92,9 @@ $(document).ready(function(){
 // Signature: takes nothing, creates the table, and assign each td a unique id up to 100
 // Example: boardSetup(); --> creates 10x10 square
 function boardSetup() {
-  for (y = 0; y < 10; y++) {
+  for (var y = 0; y < 10; y++) {
     $("table").append("<tr></tr>");
-    for (x = 0; x < 10; x++) {
+    for (var x = 0; x < 10; x++) {
       $("tr").last().append("<td id="+y+x+"></td>");
     }
   }
