@@ -3,9 +3,11 @@ var board = [];
 var SHIP = 5;
 var coordinates = [];
 var shipsSunk = 0;
+var shipsTotal;
 
 $(document).ready(function(){
   boardSetup();
+  createBoard(board);
   $("td").on("click",
     function() {
       $(this).addClass("miss").off("click");
@@ -19,13 +21,13 @@ $(document).ready(function(){
         $("#"+coordinates[0]+coordinates[1]).addClass("hit");
         shipsSunk++;
       }
-      if (shipsSunk == 5) {
+      if (shipsSunk == shipsTotal) {
         $("#result").text("Congrats, You Sunk My Battleships.");
         $("td").off("click");
       }
       if (torpedosUsed <= 0) {
         $("td").off("click");
-        if (shipsSunk < 5) {
+        if (shipsSunk < shipsTotal) {
           $("#result").text("Sorry, You Lose.");
           revealAnswer();
         }
@@ -33,12 +35,15 @@ $(document).ready(function(){
     }
   );
 
-  createBoard(board);
+  //on click clears the td's of any classes.
   $("#Ship1").on("click",
     function() {
       clearTDClasses();
+      //resets the board to an empty array
       board = [];
+      //repopulates the board with arrays and 0's
       createBoard(board);
+      //creates the ships on the array "board", length 1, amount of ships 5;
       deployShipX(board, 1, 5);
     }
   );
@@ -130,6 +135,7 @@ function revealAnswer() {
   }
 };
 
+//clear the TD's of any classes
 function clearTDClasses(){
   for (var y = 0; y < 10; y++) {
     for (var x = 0; x < 10; x++) {
@@ -140,20 +146,24 @@ function clearTDClasses(){
   }
 }
 
+//deploys ships on the array, with a chosen shiplength, and a chosen amount of ships
 function deployShipX(array, shipLength, numOfShips) {
   var deployedships = 0;
   do  {
     var xCoordinate = Math.floor(Math.random() * (11-shipLength));
     var yCoordinate = Math.floor(Math.random() * 10);
+    //checks if a ship can be placed
     if (canShipBePlaced(shipLength, array, yCoordinate, xCoordinate)) {
+      //places a ship on the x axis
       placeShipX(shipLength, yCoordinate, xCoordinate, array);
       deployedships++;
     }
   }
   while (deployedships < numOfShips)
+  shipsTotal = shipLength * numOfShips;
 }
 
-
+//checks if a ship can be placed in the given coordinates.
 function canShipBePlaced(shipLength, array, yCoordinate, xCoordinate) {
   //check all points of ship for adjacent occupied points
   for (var x = 0; x < shipLength; x++) {
@@ -168,7 +178,6 @@ function canShipBePlaced(shipLength, array, yCoordinate, xCoordinate) {
 function placeShipX(shipLength, yCoordinate, xCoordinate, array){
   for (var x = 0; x < shipLength; x++){
     array[yCoordinate][xCoordinate+x] = SHIP;
-    $("#"+yCoordinate+(xCoordinate+x)).addClass("hiddenships");
   }
 }
 
@@ -185,16 +194,21 @@ function isCoordinateOnBoardAndOccupied(array, yCoordinate, xCoordinate) {
   return array[yCoordinate][xCoordinate] === SHIP;
 }
 
+//checks if the spots adjacent to the chosen coordinates are occupied.
 function areAdjacentCoordinatesOccupied(array, yCoordinate, xCoordinate) {
+  //checks the coordinate above the chosen coordinate is on board or occupied
   if (isCoordinateOnBoardAndOccupied(array, yCoordinate+1, xCoordinate)) {
     return true;
   }
+  //checks the coordinate below the chosen coordinate is occupied on board or occupied
   if (isCoordinateOnBoardAndOccupied(array, yCoordinate-1, xCoordinate)) {
     return true;
   }
+  //checks the coordinate to the right of the chosen coordinate is on board or occupied
   if (isCoordinateOnBoardAndOccupied(array, yCoordinate, xCoordinate+1)) {
     return true;
   }
+  //checks the coordinate to the left of the chosen coordinate is on board or occupied
   if (isCoordinateOnBoardAndOccupied(array, yCoordinate, xCoordinate-1)) {
     return true;
   }
